@@ -1,34 +1,99 @@
-// Задача: Список студентів з середнім балом, та яка знаходить студента з найвищим середнім балом.
+// Задача 1: Функция для вычисления площади прямоугольника
+function calculateRectangleArea(width: number, height: number): string {
+    return `Площадь прямоугольника: ${width * height} см^2`;
+}
+// console.log(calculateRectangleArea(5, 3));
+// console.log(calculateRectangleArea(7, 4));
 
-type Student = {
-    name: string;
-    course: number;
-    averageGrade: number;
+// Задача 2: Функція для створення користувача з роллю
+
+enum Role {
+    Admin = 'Адміністратор',
+    User = 'Користувач',
+    Guest = 'Гість'
 }
 
-const students: Student[] = [
-    { name: "Аліса", course: 1, averageGrade: 85 },
-    { name: "Герман", course: 3, averageGrade: 92 },
-    { name: "Чарлі", course: 2, averageGrade: 78 },
+type User = {
+    name: string;
+    age: number;
+    role: Role;
+};
+
+function createUser(name: string, age: number, role: Role = Role.Guest): User {
+    return { 
+        name, 
+        age, 
+        role 
+    };
+}
+
+const user1 = createUser('Іван', 30, Role.Admin);
+const user2 = createUser('Олена', 25, Role.User);
+const user3 = createUser('Кирило', 44); // роль за замовчуванням - Гість
+
+// console.log(user1);
+// console.log(user2);
+// console.log(user3);
+
+// Задача 3: Функція для перевірки мінімальної довжини пароля
+
+function validatePassword(password: string, minLength?: number): boolean {
+    if(minLength === undefined) {
+        minLength = 8; // Значення за замовчуванням
+    }
+
+    return password.length >= minLength;
+}
+
+// console.log(validatePassword('mypassword')); // true
+// console.log(validatePassword('short')); // false
+// console.log(validatePassword('mypassword', 12)); // false
+// console.log(validatePassword('mypassword', 9)); // true
+
+// Задача 4: Функція для обчислення середнього значення з довільної кількості чисел
+
+function calculateAverage(...numbers: Array<number>): number {
+    if (numbers.length === 0) {
+        console.log('No numbers provided.');
+        return 0;
+    }
+
+    const sum =numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    return sum / numbers.length;
+}
+
+// console.log(calculateAverage(5, 10, 15, 20));
+// console.log(calculateAverage(2, 4, 6));
+
+
+
+type Product = {
+    name: string;
+    price: number;
+};
+
+function calculateOrderTotal(...products: Array<Product>): number {
+    if (products.length === 0) {
+        console.log('Замовлення порожнє.');
+        return 0;
+    }
+
+    let total = 0;
+    for (const product of products) {
+        if (product.price <= 0) {
+            console.log(`Неправильна ціна для товару: ${product.name}`);
+            continue;
+        }
+        total += product.price;
+    }
+    return total;
+}
+
+const products: Array<Product> = [
+    { name: 'Телефон', price: 1000 },
+    { name: 'Ноутбук', price: 2500 },
+    { name: 'Планшет', price: -50 }, // Неправильна ціна
 ];
 
-let totalAverage: number = 0;
-let topStudent: Student = students[0];
-
-let sum: number = 0;
-
-for(let student of students) {
-    sum += student.averageGrade;
-    if (student.averageGrade > topStudent.averageGrade) {
-        topStudent = student;
-    }
-    console.log(`Студент: ${student.name}, Курс: ${student.course}, Середній бал: ${student.averageGrade}`);
-}
-totalAverage = sum / students.length;
-console.log(`Загальний середній бал по всіх студентах: ${totalAverage}`);
-
-if (topStudent !== null) {
-    console.log(`Студент з найвищим середнім балом це ${topStudent.name}, його бал: ${topStudent.averageGrade}`);
-} else {
-    console.log("Студент з найвищим середнім балом не знайдений.");
-}
+const orderTotal = calculateOrderTotal(...products);
+console.log(`Загальна вартість замовлення: ${orderTotal} Грн`);
